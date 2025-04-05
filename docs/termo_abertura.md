@@ -97,6 +97,6 @@ A tela de login do aplicativo Gráficos Táteis será projetada para ser simples
      - Feedback Tátil: Vibração curta ao toque
 
 ## Links Úteis
-- [Repositório do Projeto](https://github.com/joaopaulotest/Graficos-Tateis)
-- [Issues](https://github.com/joaopaulotest/Graficos-Tateis/issues)
-- [Milestone da Sprint I](https://github.com/joaopaulotest/Graficos-Tateis/milestones)
+- [Repositório do Projeto](https://github.com/joaopaulotest/projeto-graficos-tateis)
+- [Sprint I - Termo de Abertura (Project)](https://github.com/joaopaulotest/projeto-graficos-tateis/projects/1)
+- [Issues da Sprint I](https://github.com/joaopaulotest/projeto-graficos-tateis/issues?q=is%3Aissue+is%3Aclosed)
