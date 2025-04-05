@@ -5,7 +5,6 @@ import 'package:flutter_tts/flutter_tts.dart';
 import 'package:math_expressions/math_expressions.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
 import 'dart:math';
-import 'package:google_generative_ai/google_generative_ai.dart';
 import 'package:just_audio/just_audio.dart';
 import 'package:permission_handler/permission_handler.dart';
 
@@ -51,11 +50,6 @@ class _TelaGraficosState extends State<TelaGraficos> {
   bool _desenhoConcluido = false;
   String _formaGerada = "";
   Offset _ultimaPosicao = Offset.zero;
-
-  final GenerativeModel _model = GenerativeModel(
-    model: 'gemini-pro',
-    apiKey: 'AIzaSyDgnxULw84WcNRIUK0fOC1ViMhgiAWDoCM',
-  );
 
   @override
   void initState() {
@@ -386,18 +380,7 @@ class _TelaGraficosState extends State<TelaGraficos> {
       _pontos = pontos;
       _desenhoConcluido = false;
     });
-    await _gerarDescricaoGemini(descricao);
-  }
-
-  Future<void> _gerarDescricaoGemini(String promptBase) async {
-    try {
-      final prompt =
-          'Descreva de forma acessível para deficientes visuais: $promptBase';
-      final response = await _model.generateContent([Content.text(prompt)]);
-      _falar(response.text ?? promptBase);
-    } catch (e) {
-      _falar(promptBase);
-    }
+    _falar(descricao);
   }
 
   void _tocarAudio() async {
@@ -508,7 +491,7 @@ class _TelaGraficosState extends State<TelaGraficos> {
         _falar("Fora da linha"); // Feedback ao sair da linha
       }
       String direcao = _calcularDirecao(position);
-      await _gerarDescricaoGemini(direcao);
+      _falar(direcao);
     }
 
     // Verificação de conclusão mais precisa
@@ -654,19 +637,9 @@ class _TelaGraficosState extends State<TelaGraficos> {
     );
   }
 
-  // Método para buscar ajuda usando Gemini
-  void _buscarAjuda(String pesquisa) async {
-    if (pesquisa.isNotEmpty) {
-      final prompt = 'Busque informações sobre: $pesquisa';
-      try {
-        final response = await _model.generateContent([Content.text(prompt)]);
-        _falar(response.text ?? "Nenhuma informação encontrada.");
-      } catch (e) {
-        _falar("Erro ao buscar informações.");
-      }
-    } else {
-      _falar("Por favor, insira um termo de pesquisa.");
-    }
+  // Método para buscar ajuda
+  void _buscarAjuda(String pesquisa) {
+    _falar("Buscando informações sobre: $pesquisa");
   }
 
   @override
