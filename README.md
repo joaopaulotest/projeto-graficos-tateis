@@ -38,3 +38,9 @@ flutter pub get
 # Execute o aplicativo
 flutter run
 ```
+
+## 📋 Documentação
+
+- [Termo de Abertura do Projeto](docs/termo_abertura.md)
+- [Sprint I - Milestone](https://github.com/joaopaulotest/projeto-graficos-tateis/milestones)
+- [Issues](https://github.com/joaopaulotest/projeto-graficos-tateis/issues)
