@@ -1,16 +1,40 @@
-# tactile_graph
+# Gráficos Táteis: Ferramenta Inclusiva para o Ensino de Matemática
 
-A new Flutter project.
+![Status](https://img.shields.io/badge/Status-Em%20Desenvolvimento-blue)
+![Flutter](https://img.shields.io/badge/Flutter-3.13.0-blue)
 
-## Getting Started
+**Desenvolvedor**: João Paulo Calixto da Silva  
+**Patrocinador**: Henrique Leitão (henriqueleitao@ifce.edu.br)
 
-This project is a starting point for a Flutter application.
+## 📝 Descrição do Projeto
 
-A few resources to get you started if this is your first Flutter project:
+Aplicativo móvel para tornar acessível conceitos matemáticos visuais (gráficos e formas geométricas) para pessoas com deficiência visual, utilizando feedback tátil e auditivo. Alinhado com ODS 4 (Educação Inclusiva).
 
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
+## 🛠️ Tecnologias Utilizadas
 
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+- Flutter (Framework para desenvolvimento multiplataforma)
+- Syncfusion Flutter Charts (Geração de gráficos)
+- Flutter TTS (Conversão de texto em fala)
+- Vibração (Feedback tátil)
+
+## 🎯 Funcionalidades Principais
+
+- Geração de gráficos 2D com vibração e áudio descritivo
+- Exploração tátil de formas geométricas
+- Compatibilidade com leitores de tela (TalkBack, VoiceOver)
+
+## 💻 Instalação
+
+```bash
+# Clone do repositório
+git clone https://github.com/joaopaulotest/projeto-graficos-tateis.git
+
+# Entre no diretório
+cd projeto-graficos-tateis
+
+# Instale as dependências
+flutter pub get
+
+# Execute o aplicativo
+flutter run
+```
