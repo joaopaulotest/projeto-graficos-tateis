@@ -1,6 +1,8 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android">
-    <uses-permission android:name="android.permission.RECORD_AUDIO"/>
+    <uses-permission android:name="android.permission.RECORD_AUDIO"/> <!-- Permissão para gravação de áudio -->
     <uses-permission android:name="android.permission.VIBRATE"/> <!-- Permissão para vibração -->
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/> <!-- Permissão para leitura do armazenamento -->
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/> <!-- Permissão para escrita no armazenamento -->
     
     <application
         android:label="tactile_graph"

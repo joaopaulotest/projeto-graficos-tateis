@@ -45,10 +45,12 @@ class _TelaGraficosState extends State<TelaGraficos> {
   List<Offset> _pontos = [];
   double _xMin = -10, _xMax = 10;
   bool _rastreando = false;
-  double _espessuraLinha = 12.0;
+  double _espessuraLinha = 12.0; // Espessura inicial da linha
   bool _vibracaoAtiva = false;
   bool _sobreReta = false;
   bool _desenhoConcluido = false;
+  String _formaGerada = "";
+  Offset _ultimaPosicao = Offset.zero;
 
   final GenerativeModel _model = GenerativeModel(
     model: 'gemini-pro',
@@ -66,7 +68,12 @@ class _TelaGraficosState extends State<TelaGraficos> {
 
   void _inicializarTTS() async {
     await _tts.setLanguage('pt-BR');
-    await _tts.setSpeechRate(0.4);
+    await _tts.setSpeechRate(0.8);
+  }
+
+  void _falar(String texto) async {
+    await Future.delayed(const Duration(milliseconds: 200));
+    await _tts.speak(texto);
   }
 
   Future<void> _carregarAudio() async {
@@ -159,6 +166,7 @@ class _TelaGraficosState extends State<TelaGraficos> {
       pontos: [Offset(0, 0), Offset(5, 0), Offset(0, 5), Offset(0, 0)],
       descricao: 'Triângulo retângulo gerado com catetos de 5 unidades',
     );
+    _formaGerada = "Triângulo Retângulo"; // Atualiza a forma gerada
   }
 
   void _gerarCirculo({required double raio}) {
@@ -171,6 +179,7 @@ class _TelaGraficosState extends State<TelaGraficos> {
       pontos: pontos,
       descricao: 'Círculo gerado com raio $raio unidades',
     );
+    _formaGerada = "Círculo"; // Atualiza a forma gerada
   }
 
   void _gerarQuadrado({required double lado}) {
@@ -180,10 +189,11 @@ class _TelaGraficosState extends State<TelaGraficos> {
         Offset(lado, 0),
         Offset(lado, lado),
         Offset(0, lado),
-        Offset(0, 0)
+        Offset(0, 0),
       ],
       descricao: 'Quadrado gerado com lado $lado unidades',
     );
+    _formaGerada = "Quadrado"; // Atualiza a forma gerada
   }
 
   void _gerarRetangulo({required double largura, required double altura}) {
@@ -193,10 +203,11 @@ class _TelaGraficosState extends State<TelaGraficos> {
         Offset(largura, 0),
         Offset(largura, altura),
         Offset(0, altura),
-        Offset(0, 0)
+        Offset(0, 0),
       ],
       descricao: 'Retângulo gerado com largura $largura e altura $altura',
     );
+    _formaGerada = "Retângulo"; // Atualiza a forma gerada
   }
 
   void _gerarPoligonoRegular({required int lados, required double raio}) {
@@ -209,6 +220,7 @@ class _TelaGraficosState extends State<TelaGraficos> {
       pontos: pontos,
       descricao: 'Polígono regular de $lados lados gerado',
     );
+    _formaGerada = "Polígono Regular"; // Atualiza a forma gerada
   }
 
   void _gerarLosango({required double largura, required double altura}) {
@@ -218,10 +230,11 @@ class _TelaGraficosState extends State<TelaGraficos> {
         Offset(largura / 2, altura / 2),
         Offset(largura, 0),
         Offset(largura / 2, -altura / 2),
-        Offset(0, 0)
+        Offset(0, 0),
       ],
       descricao: 'Losango gerado com largura $largura e altura $altura',
     );
+    _formaGerada = "Losango"; // Atualiza a forma gerada
   }
 
   void _gerarTrapezio({
@@ -235,11 +248,12 @@ class _TelaGraficosState extends State<TelaGraficos> {
         Offset(baseMaior, 0),
         Offset(baseMaior - (baseMaior - baseMenor) / 2, altura),
         Offset((baseMaior - baseMenor) / 2, altura),
-        Offset(0, 0)
+        Offset(0, 0),
       ],
       descricao:
           'Trapézio gerado com base maior $baseMaior, base menor $baseMenor e altura $altura',
     );
+    _formaGerada = "Trapézio"; // Atualiza a forma gerada
   }
 
   void _gerarTrapezioIsosceles({
@@ -249,6 +263,7 @@ class _TelaGraficosState extends State<TelaGraficos> {
   }) {
     _gerarTrapezio(baseMaior: baseMaior, baseMenor: baseMenor, altura: altura);
     _falar("Trapézio isósceles gerado.");
+    _formaGerada = "Trapézio Isósceles"; // Atualiza a forma gerada
   }
 
   void _gerarTrapezioRetangulo({
@@ -262,10 +277,11 @@ class _TelaGraficosState extends State<TelaGraficos> {
         Offset(baseMaior, 0),
         Offset(baseMaior, altura),
         Offset(baseMenor, altura),
-        Offset(0, 0)
+        Offset(0, 0),
       ],
       descricao: 'Trapézio retângulo gerado',
     );
+    _formaGerada = "Trapézio Retângulo"; // Atualiza a forma gerada
   }
 
   void _gerarParalelogramo({
@@ -279,10 +295,11 @@ class _TelaGraficosState extends State<TelaGraficos> {
         Offset(largura, 0),
         Offset(largura + inclinacao, altura),
         Offset(inclinacao, altura),
-        Offset(0, 0)
+        Offset(0, 0),
       ],
       descricao: 'Paralelogramo gerado',
     );
+    _formaGerada = "Paralelogramo"; // Atualiza a forma gerada
   }
 
   void _gerarElipse({required double raioX, required double raioY}) {
@@ -295,6 +312,7 @@ class _TelaGraficosState extends State<TelaGraficos> {
       pontos: pontos,
       descricao: 'Elipse gerada com raio X $raioX e raio Y $raioY',
     );
+    _formaGerada = "Elipse"; // Atualiza a forma gerada
   }
 
   void _gerarCubo({required double lado}) {
@@ -313,11 +331,13 @@ class _TelaGraficosState extends State<TelaGraficos> {
       ],
       descricao: 'Cubo gerado com lado $lado',
     );
+    _formaGerada = "Cubo"; // Atualiza a forma gerada
   }
 
   void _gerarEsfera({required double raio}) {
     _gerarCirculo(raio: raio);
     _falar("Esfera gerada com raio $raio");
+    _formaGerada = "Esfera"; // Atualiza a forma gerada
   }
 
   void _gerarCilindro({required double raio, required double altura}) {
@@ -327,10 +347,11 @@ class _TelaGraficosState extends State<TelaGraficos> {
         Offset(altura, 0),
         Offset(altura, raio * 2),
         Offset(0, raio * 2),
-        Offset(0, 0)
+        Offset(0, 0),
       ],
       descricao: 'Cilindro gerado com raio $raio e altura $altura',
     );
+    _formaGerada = "Cilindro"; // Atualiza a forma gerada
   }
 
   void _gerarCone({required double raio, required double altura}) {
@@ -339,10 +360,11 @@ class _TelaGraficosState extends State<TelaGraficos> {
         Offset(0, 0),
         Offset(altura, 0),
         Offset(altura / 2, raio * 2),
-        Offset(0, 0)
+        Offset(0, 0),
       ],
       descricao: 'Cone gerado com raio $raio e altura $altura',
     );
+    _formaGerada = "Cone"; // Atualiza a forma gerada
   }
 
   void _gerarPiramide({required double base, required double altura}) {
@@ -351,10 +373,11 @@ class _TelaGraficosState extends State<TelaGraficos> {
         Offset(0, 0),
         Offset(base, 0),
         Offset(base / 2, altura),
-        Offset(0, 0)
+        Offset(0, 0),
       ],
       descricao: 'Pirâmide gerada com base $base e altura $altura',
     );
+    _formaGerada = "Pirâmide"; // Atualiza a forma gerada
   }
 
   void _gerarForma(
@@ -387,21 +410,21 @@ class _TelaGraficosState extends State<TelaGraficos> {
     }
   }
 
-  void _vibrar({int duracao = 100}) async {
+  void _vibrarMelhorado() async {
     if (_vibracaoAtiva) return;
     _vibracaoAtiva = true;
-    if (await Vibration.hasVibrator() ?? false) {
-      await Vibration.vibrate(duration: duracao);
-      print("Vibração ativada."); // Log para depuração
-    } else {
-      print("Vibração não disponível."); // Log para depuração
-    }
-    Future.delayed(
-        Duration(milliseconds: duracao), () => _vibracaoAtiva = false);
-  }
 
-  void _falar(String texto) async {
-    await _tts.speak(texto);
+    bool? hasVibrator = await Vibration.hasVibrator();
+    if (hasVibrator == true) {
+      await Vibration.vibrate(pattern: [100, 100, 100]); // Vibração mais rápida
+      print("Vibração ativada.");
+    } else {
+      print("Dispositivo não suporta vibração.");
+    }
+
+    Future.delayed(const Duration(milliseconds: 2000), () {
+      _vibracaoAtiva = false;
+    });
   }
 
   void _calcularPontos() {
@@ -417,51 +440,12 @@ class _TelaGraficosState extends State<TelaGraficos> {
     setState(() {});
   }
 
-  void _rastrearGrafico(Offset position) async {
-    double distancia = _calcularDistanciaDoGrafico(position);
-    if (distancia < 10) {
-      if (!_sobreReta) {
-        _sobreReta = true;
-        _vibrar(duracao: 2000); // Vibra por 2 segundos
-        _tocarAudio(); // Toca o bip aqui
-        print("Vibração ativada ao tocar na linha."); // Log para depuração
-      }
-    } else {
-      _sobreReta = false;
-      String direcao = _calcularDirecao(position);
-      await _gerarDescricaoGemini(direcao);
-    }
-
-    // Verifica se o desenho foi concluído
-    if (_pontos.isNotEmpty &&
-        position.dx >= _pontos.last.dx - 10 &&
-        position.dy >= _pontos.last.dy - 10) {
-      if (!_desenhoConcluido) {
-        _desenhoConcluido = true;
-        _falar("Você concluiu");
-      }
-    }
-  }
-
-  String _calcularDirecao(Offset position) {
-    if (position.dx < _pontos.first.dx) {
-      return "Para a direita";
-    } else if (position.dx > _pontos.last.dx) {
-      return "Para a esquerda";
-    } else if (position.dy < _pontos.first.dy) {
-      return "Para baixo";
-    } else if (position.dy > _pontos.last.dy) {
-      return "Para cima";
-    }
-    return "Continue";
-  }
-
-  double _calcularDistanciaDoGrafico(Offset pontoToque) {
+  double _calcularDistanciaDoGrafico(Offset position) {
     double menorDistancia = double.infinity;
     for (int i = 0; i < _pontos.length - 1; i++) {
       Offset ponto1 = _pontos[i];
       Offset ponto2 = _pontos[i + 1];
-      double distancia = _distanciaPontoParaLinha(pontoToque, ponto1, ponto2);
+      double distancia = _distanciaPontoParaLinha(position, ponto1, ponto2);
       if (distancia < menorDistancia) {
         menorDistancia = distancia;
       }
@@ -474,19 +458,140 @@ class _TelaGraficosState extends State<TelaGraficos> {
         ((linha2.dx - linha1.dx) * ponto.dy +
             linha2.dx * linha1.dy -
             linha2.dy * linha1.dx);
+
     double denominador =
         sqrt(pow(linha2.dy - linha1.dy, 2) + pow(linha2.dx - linha1.dx, 2));
-    return numerador.abs() / denominador;
+
+    return numerador.abs() / denominador; // Retorna a distância
   }
 
+  String _calcularDirecao(Offset position) {
+    if (_pontos.isEmpty) return "Continue";
+
+    double menorDistancia = double.infinity;
+    Offset pontoMaisProximo = Offset.zero;
+
+    for (var ponto in _pontos) {
+      double distancia = (ponto - position).distance;
+      if (distancia < menorDistancia) {
+        menorDistancia = distancia;
+        pontoMaisProximo = ponto;
+      }
+    }
+
+    if (position.dx < pontoMaisProximo.dx) {
+      return "Para a esquerda";
+    } else if (position.dx > pontoMaisProximo.dx) {
+      return "Para a direita";
+    } else if (position.dy < pontoMaisProximo.dy) {
+      return "Para baixo";
+    } else if (position.dy > pontoMaisProximo.dy) {
+      return "Para cima";
+    }
+    return "Continue";
+  }
+
+  void _rastrearGrafico(Offset position) async {
+    double distancia = _calcularDistanciaDoGrafico(position);
+
+    // Aumenta a sensibilidade do toque na linha (3 pixels)
+    if (distancia < 3) {
+      if (!_sobreReta) {
+        _sobreReta = true;
+        _vibrarMelhorado();
+        _tocarAudio();
+        _falar("Sobre a linha"); // Feedback verbal adicional
+      }
+    } else {
+      if (_sobreReta) {
+        _sobreReta = false;
+        _falar("Fora da linha"); // Feedback ao sair da linha
+      }
+      String direcao = _calcularDirecao(position);
+      await _gerarDescricaoGemini(direcao);
+    }
+
+    // Verificação de conclusão mais precisa
+    if (_pontos.isNotEmpty) {
+      final ultimoPonto = _pontos.last;
+      if ((position.dx - ultimoPonto.dx).abs() < 5 &&
+          (position.dy - ultimoPonto.dy).abs() < 5) {
+        if (!_desenhoConcluido) {
+          _desenhoConcluido = true;
+          _vibrarMelhorado();
+          _tocarAudio();
+          _falar(
+              "Desenho concluído com sucesso! Forma: $_formaGerada"); // Feedback sobre a forma gerada
+        }
+      }
+    }
+  }
+
+  // Método para gerar uma forma aleatória
+  void _gerarFormaAleatoria() {
+    final random = Random();
+    int formaAleatoria = random.nextInt(10); // Gera um número de 0 a 9
+
+    switch (formaAleatoria) {
+      case 0:
+        _gerarCirculo(raio: random.nextDouble() * 10 + 1); // Raio entre 1 e 10
+        break;
+      case 1:
+        _gerarQuadrado(lado: random.nextDouble() * 10 + 1); // Lado entre 1 e 10
+        break;
+      case 2:
+        _gerarRetangulo(
+            largura: random.nextDouble() * 10 + 1,
+            altura:
+                random.nextDouble() * 10 + 1); // Largura e altura entre 1 e 10
+        break;
+      case 3:
+        _gerarTrianguloRetangulo(); // Triângulo fixo
+        break;
+      case 4:
+        _gerarPoligonoRegular(
+            lados: 5, raio: random.nextDouble() * 5 + 1); // Pentágono
+        break;
+      case 5:
+        _gerarLosango(
+            largura: random.nextDouble() * 10 + 1,
+            altura: random.nextDouble() * 10 + 1); // Losango
+        break;
+      case 6:
+        _gerarTrapezio(
+            baseMaior: random.nextDouble() * 10 + 1,
+            baseMenor: random.nextDouble() * 10 + 1,
+            altura: random.nextDouble() * 10 + 1); // Trapézio
+        break;
+      case 7:
+        _gerarElipse(
+            raioX: random.nextDouble() * 10 + 1,
+            raioY: random.nextDouble() * 10 + 1); // Elipse
+        break;
+      case 8:
+        _gerarCubo(lado: random.nextDouble() * 10 + 1); // Cubo
+        break;
+      case 9:
+        _gerarEsfera(raio: random.nextDouble() * 10 + 1); // Esfera
+        break;
+    }
+  }
+
+  // Método para mostrar ajuda
   void _mostrarAjuda() {
     showDialog(
       context: context,
       builder: (context) {
+        final TextEditingController _pesquisaController =
+            TextEditingController();
+        final TextEditingController _feedbackController =
+            TextEditingController();
+
         return AlertDialog(
           title: const Text("Ajuda"),
           content: SingleChildScrollView(
             child: Column(
+              mainAxisSize: MainAxisSize.min,
               children: [
                 const Text("Como usar o aplicativo:\n\n"
                     "1. Descreva a forma desejada no campo de texto.\n"
@@ -496,52 +601,51 @@ class _TelaGraficosState extends State<TelaGraficos> {
                     "5. Ao tocar na linha azul, você receberá feedback tátil e sonoro.\n"
                     "6. Quando concluir o desenho, a voz informará 'Você concluiu'.\n\n"
                     "Pesquise por ajuda:"),
-                const SizedBox(height: 20), // Aumentando a distância
-                TextField(
-                  controller: _pesquisaController,
-                  decoration: const InputDecoration(
-                    hintText: "Digite sua dúvida...",
-                  ),
+                const SizedBox(height: 10),
+                // Campo de pesquisa
+                Row(
+                  children: [
+                    Expanded(
+                      child: TextField(
+                        controller: _pesquisaController,
+                        decoration: const InputDecoration(
+                          labelText: 'Buscar ajuda',
+                          border: OutlineInputBorder(),
+                        ),
+                        onSubmitted: (value) {
+                          _buscarAjuda(value);
+                        },
+                      ),
+                    ),
+                    const SizedBox(width: 10),
+                    // Botão de buscar
+                    ElevatedButton(
+                      onPressed: () {
+                        _buscarAjuda(_pesquisaController.text);
+                      },
+                      child: const Text("Buscar"),
+                    ),
+                  ],
                 ),
-                const SizedBox(height: 20), // Aumentando a distância
-                const Text("Deixe seu feedback:"),
+                const SizedBox(height: 10),
+                // Campo de feedback
                 TextField(
                   controller: _feedbackController,
                   decoration: const InputDecoration(
-                    hintText: "Digite seu feedback...",
+                    labelText: 'Seu feedback',
+                    border: OutlineInputBorder(),
                   ),
+                  onSubmitted: (value) {
+                    _falar("Feedback enviado: $value");
+                    _feedbackController.clear(); // Limpa o campo após enviar
+                  },
                 ),
               ],
             ),
           ),
           actions: [
-            OutlinedButton(
-              onPressed: () async {
-                if (_pesquisaController.text.isNotEmpty) {
-                  final prompt = _pesquisaController.text;
-                  final response =
-                      await _model.generateContent([Content.text(prompt)]);
-                  _falar(response.text ??
-                      "Não foi possível encontrar uma resposta.");
-                  print("Pesquisa processada: $prompt");
-                }
-              },
-              child: const Text("Pesquisar"),
-            ),
-            OutlinedButton(
-              onPressed: () async {
-                if (_feedbackController.text.isNotEmpty) {
-                  _falar("Feedback enviado com sucesso!");
-                  _feedbackController.clear();
-                  print("Feedback enviado.");
-                }
-              },
-              child: const Text("Enviar Feedback"),
-            ),
             TextButton(
-              onPressed: () {
-                Navigator.of(context).pop(); // Fecha o diálogo
-              },
+              onPressed: () => Navigator.of(context).pop(),
               child: const Text("Fechar"),
             ),
           ],
@@ -550,35 +654,61 @@ class _TelaGraficosState extends State<TelaGraficos> {
     );
   }
 
+  // Método para buscar ajuda usando Gemini
+  void _buscarAjuda(String pesquisa) async {
+    if (pesquisa.isNotEmpty) {
+      final prompt = 'Busque informações sobre: $pesquisa';
+      try {
+        final response = await _model.generateContent([Content.text(prompt)]);
+        _falar(response.text ?? "Nenhuma informação encontrada.");
+      } catch (e) {
+        _falar("Erro ao buscar informações.");
+      }
+    } else {
+      _falar("Por favor, insira um termo de pesquisa.");
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         title: const Text('Gráficos Táteis'),
         actions: [
-          IconButton(
-            icon: Icon(_isListening ? Icons.mic_off : Icons.mic),
-            onPressed: () {
-              _iniciarReconhecimento();
-              _falar("Ativar ou desativar reconhecimento de voz");
-            },
-            tooltip: "Ativar/desativar reconhecimento de voz",
+          Semantics(
+            label: "Reconhecimento de voz",
+            button: true,
+            child: IconButton(
+              icon: Icon(_isListening ? Icons.mic_off : Icons.mic),
+              onPressed: () async {
+                await _iniciarReconhecimento();
+                _falar(_isListening
+                    ? "Microfone ativado"
+                    : "Microfone desativado");
+              },
+            ),
           ),
-          IconButton(
-            icon: const Icon(Icons.shuffle),
-            onPressed: () {
-              _gerarFormaAleatoria();
-              _falar("Gerar forma aleatória");
-            },
-            tooltip: "Gerar forma aleatória",
+          Semantics(
+            label: "Gerar forma aleatória",
+            button: true,
+            child: IconButton(
+              icon: const Icon(Icons.shuffle),
+              onPressed: () {
+                _gerarFormaAleatoria();
+                _falar("Gerando nova forma aleatória");
+              },
+            ),
           ),
-          IconButton(
-            icon: const Icon(Icons.help),
-            onPressed: () {
-              _mostrarAjuda();
-              _falar("Ajuda e feedback");
-            },
-            tooltip: "Ajuda e feedback",
+          Semantics(
+            label: "Ajuda",
+            button: true,
+            child: IconButton(
+              icon: const Icon(Icons.help),
+              onPressed: () {
+                _mostrarAjuda();
+                _falar("Abrindo menu de ajuda");
+              },
+            ),
           ),
         ],
       ),
@@ -589,93 +719,82 @@ class _TelaGraficosState extends State<TelaGraficos> {
             child: Row(
               children: [
                 Expanded(
-                  child: TextField(
-                    controller: _controller,
-                    decoration: const InputDecoration(
-                      labelText: 'Descreva a forma desejada',
-                      border: OutlineInputBorder(),
+                  child: Semantics(
+                    label: "Campo para descrever formas",
+                    textField: true,
+                    child: TextField(
+                      controller: _controller,
+                      decoration: const InputDecoration(
+                        labelText: 'Descreva a forma desejada',
+                        border: OutlineInputBorder(),
+                      ),
+                      onSubmitted: (value) => _processarEntrada(value),
                     ),
-                    onSubmitted: (value) {
-                      _processarEntrada(value);
-                    },
                   ),
                 ),
                 const SizedBox(width: 10),
-                ElevatedButton(
-                  onPressed: () {
-                    _processarEntrada(_controller.text);
-                    _falar("Processar entrada");
+                Semantics(
+                  label: "Confirmar entrada",
+                  button: true,
+                  child: ElevatedButton(
+                    onPressed: () {
+                      _processarEntrada(_controller.text);
+                      _falar("Processando comando");
+                    },
+                    child: const Text("Enter"),
+                  ),
+                ),
+              ],
+            ),
+          ),
+          // Slider para ajustar a espessura da linha
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 16.0),
+            child: Column(
+              children: [
+                const Text("Ajustar espessura da linha"),
+                Slider(
+                  value: _espessuraLinha,
+                  min: 1.0,
+                  max: 20.0,
+                  divisions: 19,
+                  onChanged: (value) {
+                    setState(() {
+                      _espessuraLinha = value;
+                    });
                   },
-                  child: const Text("Enter"),
                 ),
               ],
             ),
           ),
           Expanded(
-            child: GestureDetector(
-              onPanUpdate: (details) {
-                if (_rastreando) {
-                  _rastrearGrafico(details.localPosition);
-                }
-              },
-              child: SfCartesianChart(
-                primaryXAxis: NumericAxis(interval: 2),
-                primaryYAxis: NumericAxis(interval: 2),
-                series: [
-                  LineSeries<Offset, double>(
-                    dataSource: _pontos,
-                    xValueMapper: (ponto, _) => ponto.dx,
-                    yValueMapper: (ponto, _) => ponto.dy,
-                    width: _espessuraLinha,
-                  ),
-                ],
+            child: Semantics(
+              label: "Área de desenho interativa",
+              child: GestureDetector(
+                onPanStart: (_) => setState(() => _rastreando = true),
+                onPanEnd: (_) => setState(() {
+                  _rastreando = false;
+                  _sobreReta = false;
+                }),
+                onPanUpdate: (details) =>
+                    _rastrearGrafico(details.localPosition),
+                child: SfCartesianChart(
+                  primaryXAxis: NumericAxis(interval: 2),
+                  primaryYAxis: NumericAxis(interval: 2),
+                  series: [
+                    LineSeries<Offset, double>(
+                      dataSource: _pontos,
+                      xValueMapper: (ponto, _) => ponto.dx,
+                      yValueMapper: (ponto, _) => ponto.dy,
+                      width: _espessuraLinha, // Espessura ajustável da linha
+                    ),
+                  ],
+                ),
               ),
             ),
           ),
         ],
       ),
     );
-  }
-
-  void _gerarFormaAleatoria() {
-    final formas = [
-      "triângulo retângulo",
-      "círculo",
-      "quadrado",
-      "retângulo",
-      "pentágono",
-      "hexágono",
-      "heptágono",
-      "octógono",
-      "losango",
-      "trapézio",
-      "paralelogramo",
-      "decágono",
-      "dodecágono",
-      "elipse",
-      "trapézio isósceles",
-      "trapézio retângulo",
-      "cubo",
-      "esfera",
-      "cilindro",
-      "cone",
-      "pirâmide",
-    ];
-    _entrada = formas[Random().nextInt(formas.length)];
-    _processarEntrada(_entrada);
-  }
-
-  void _vibrarMelhorado() async {
-    if (_vibracaoAtiva) return;
-    _vibracaoAtiva = true;
-    if (await Vibration.hasVibrator() ?? false) {
-      await Vibration.vibrate(duration: 1000); // Vibra por 1 segundo
-      await Future.delayed(Duration(milliseconds: 500)); // Pausa de 0.5 segundo
-      await Vibration.vibrate(duration: 1000); // Vibra por mais 1 segundo
-      print("Vibração ativada."); // Log para depuração
-    } else {
-      print("Vibração não disponível."); // Log para depuração
-    }
-    Future.delayed(Duration(milliseconds: 2000), () => _vibracaoAtiva = false);
   }
 }

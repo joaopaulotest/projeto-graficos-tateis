@@ -11,7 +11,7 @@ dependencies:
     sdk: flutter
   flutter_tts: ^4.2.2
   speech_to_text: ^7.0.0
-  vibration: ^3.1.2
+  vibration: ^3.1.0
   permission_handler: ^10.0.0
   math_expressions: ^2.3.0
   syncfusion_flutter_charts: ^28.2.3
@@ -20,7 +20,7 @@ dependencies:
   dio: ^5.3.3
   path_provider: ^2.0.11
   path: ^1.8.3
-  just_audio: ^0.9.44  # Versão estável e compatível
+  just_audio: ^0.9.44
 
 dev_dependencies:
   flutter_test:
