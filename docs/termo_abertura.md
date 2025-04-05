@@ -1,43 +1,97 @@
 # Termo de Abertura do Projeto - Gráficos Táteis
 
-## 1. Informações Gerais
-- **Nome do Projeto**: Gráficos Táteis - Ferramenta Inclusiva para o Ensino de Matemática
-- **Gerente do Projeto**: João Paulo Calixto da Silva
-- **Cliente/Área Solicitante**: Departamento de Educação Inclusiva
-- **Patrocinador**: Henrique Leitão
+## Informações do Projeto
+- **Gestor do Projeto**: João Paulo Calixto da Silva [joao.paulo.calixto08@aluno.ifce.edu.br]
+- **Patrocinador**: Henrique Leitão [henriqueleitao@ifce.edu.br]
 
-## 2. Objetivo do Projeto
-Desenvolver uma aplicação móvel que torne acessível conceitos matemáticos visuais (gráficos e formas geométricas) para pessoas com deficiência visual, utilizando feedback tátil e auditivo, contribuindo para a inclusão no ensino de matemática.
+## Histórico de Revisão
+| Data | Versão | Descrição | Autor |
+|------|---------|-----------|--------|
+| 30/03/2025 | 1.0 | Criação do documento | João Paulo Calixto da Silva |
 
-## 3. Justificativa do Projeto
-A inclusão de estudantes com deficiência visual no ensino de matemática enfrenta diversos desafios, especialmente quando se trata de conceitos visuais como gráficos e formas geométricas. Este projeto visa preencher essa lacuna, oferecendo uma solução tecnológica que permita o acesso a esses conceitos de forma interativa e acessível.
+## 1. Descrição Resumida da Demanda
+### Necessidade
+Desenvolver uma ferramenta tecnológica que permita a pessoas com deficiência visual acessar conceitos matemáticos visuais (gráficos e formas geométricas) por meio de feedback tátil e auditivo, superando as barreiras educacionais existentes.
 
-## 4. Descrição do Produto
-Aplicativo móvel multiplataforma com as seguintes características principais:
-- Interface adaptada para usuários com deficiência visual
-- Sistema de feedback tátil através de vibração
-- Feedback auditivo via texto-para-fala (TTS)
-- Geração de gráficos acessíveis
-- Suporte a diferentes tipos de gráficos e formas geométricas
+### Justificativa
+- 6,5 milhões de brasileiros com deficiência visual (IBGE, 2020)
+- Falta de soluções acessíveis para ensino de matemática visual
+- Alinhamento com ODS 4 (Educação Inclusiva) e LBI 13.146/2015
 
-## 5. Principais Requisitos
+## 2. Stakeholders do Projeto
+| Stakeholder | Interesse |
+|------------|-----------|
+| Pessoas com deficiência visual | Acesso equitativo ao ensino de matemática |
+| Professores de matemática | Ferramenta pedagógica inclusiva |
+| Instituições de ensino | Cumprimento de políticas de acessibilidade |
+| Desenvolvedores | Criação de tecnologia assistiva inovadora |
+
+## 3. Solução
+Aplicativo Móvel "Gráficos Táteis" com as seguintes funcionalidades:
+- Geração de gráficos matemáticos (ex: y = x²) com feedback tátil (vibração) e auditivo (descrição em áudio)
+- Exploração de formas geométricas 2D (círculo, quadrado, triângulo) por toque na tela
+- Compatibilidade com leitores de tela (TalkBack, VoiceOver)
+
+### 3.1 Tecnologias a serem Utilizadas
+| Tecnologia | Finalidade |
+|------------|------------|
+| Flutter | Desenvolvimento (Android) |
+| Syncfusion Flutter Charts | Geração de gráficos interativos |
+| Flutter TTS | Conversão de texto em fala |
+| Speech to Text | Reconhecimento de comandos por voz |
+| Vibration | Feedback tátil personalizado |
+
+## 4. Protótipo do Projeto
+- Link do Protótipo de Baixa Fidelidade: [A ser inserido]
+
+### Funcionalidades Prototipadas
+- Tela inicial com opções de entrada (voz ou texto)
+- Exemplo de gráfico de função quadrática com pontos de vibração e voz para auxílio na direção correta
+
+## 5. Escopo
 ### 5.1 Requisitos Funcionais
-- Geração de gráficos acessíveis
-- Sistema de navegação por toque
-- Feedback tátil via vibração
-- Feedback auditivo descritivo
-- Personalização de configurações de acessibilidade
+| ID | Descrição |
+|----|-----------|
+| RF01 | Permitir entrada de funções matemáticas via voz ou texto |
+| RF02 | Gerar gráficos 2D com feedback tátil (vibração em pontos-chave) |
+| RF03 | Descrever características do gráfico (eixos, pontos críticos) por áudio |
 
 ### 5.2 Requisitos Não Funcionais
-- Compatibilidade com Android
-- Interface intuitiva e acessível
-- Resposta em tempo real
-- Baixo consumo de recursos
-- Conformidade com diretrizes de acessibilidade
+| ID | Descrição |
+|----|-----------|
+| RNF01 | Tempo de resposta do sistema ≤ 2 segundos para comandos de voz |
+| RNF02 | Compatibilidade com Android 10+ e iOS 14+ |
 
-## 6. Marcos do Projeto
-- **Início do Projeto**: Abril/2025
-- **Análise e Design**: Maio/2025
-- **Desenvolvimento MVP**: Junho/2025
-- **Testes com Usuários**: Julho/2025
-- **Lançamento**: Agosto/2025
+### 5.3 Não Escopo
+- Gráficos 3D ou funções trigonométricas complexas
+- Integração com plataformas de ensino remoto (Moodle, Google Classroom)
+
+## 6. Especificação da Interface
+### Tela de Login
+A tela de login será projetada para ser simples, acessível e compatível com leitores de tela.
+
+#### Elementos da Tela
+1. **Título da Página**
+   - Texto: "Bem-vindo ao Gráficos Táteis"
+   - Localização: Topo da tela, centralizado
+   - Feedback Auditivo: Leitor de tela informa "Bem-vindo ao Gráficos Táteis"
+
+2. **Campos de Entrada**
+   - Campo de E-mail
+     - Placeholder: "Digite seu e-mail"
+     - Validação: "Formato de e-mail inválido"
+     - Feedback Tátil: Vibração rápida em caso de erro
+   - Campo de Senha
+     - Placeholder: "Digite sua senha"
+     - Validação: "Senha incorreta"
+     - Feedback Tátil: Vibração longa para erro de autenticação
+
+3. **Botões**
+   - Botão de Login
+     - Texto: "Entrar"
+     - Feedback Tátil: Vibração curta ao toque
+   - Botão de Recuperação de Senha
+     - Texto: "Esqueceu sua senha?"
+   - Botão de Cadastro
+     - Texto: "Criar Conta"
+     - Feedback Tátil: Vibração curta ao toque
