@@ -127,6 +127,6 @@ Gerenciar perfis, preferências e progresso dos usuários.
    - Suporte a diferentes níveis de experiência
 
 4. **Técnicos**
-   - Compatível com Android 10+ e iOS 14+
+   - Compatível com Android 14+
    - Dados protegidos conforme LGPD
    - Código documentado e testado
